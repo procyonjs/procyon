@@ -1,0 +1,255 @@
+body {
+  margin: 0 !important;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+:root {
+  --color-black: #211e26;
+  --color-gray: #5b5268;
+  --color-black-10p: rgba(33, 30, 38, 0.1);
+  --color-black-20p: rgba(33, 30, 38, 0.2);
+  --color-primary: #671ddf;
+  --padding: 40px;
+}
+
+* {
+  font-family: "DM Sans", sans-serif;
+  color: var(--color-black);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+section#hero {
+  width: 100vw;
+  height: 100vh;
+  background: #f7f8fb;
+  padding: 0px calc(var(--padding) / 2);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+}
+
+#img_top {
+  display: none;
+  opacity: 0;
+  transition: 300ms;
+}
+
+section#hero .hero-content h1 {
+  font-size: 48px;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+section#hero .hero-content p {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 25px calc(var(--padding) / 2);
+  background-color: #f7f8fb88;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-flow: row wrap;
+}
+
+header a {
+  font-size: 20px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin: 0px 22px;
+  cursor: pointer;
+}
+
+header a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  background: var(--color-primary);
+  transition: 300ms ease-in-out;
+}
+
+header a:hover {
+  color: var(--color-primary);
+}
+
+header a:hover::before {
+  width: 100%;
+  left: 0;
+}
+
+header a > img {
+  margin-right: 11px;
+}
+
+nav {
+  display: none;
+}
+
+div.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+}
+
+a.button {
+  margin: 0;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-family: "DM Sans", "Raleway", sans-serif;
+  font-weight: bold;
+  padding: 12px 30px;
+  border-radius: 8px;
+
+  text-decoration: none;
+
+  border: 1px solid var(--color-black-10p);
+  background: var(--color-black-20p);
+  color: var(--color-black);
+  cursor: pointer;
+  transition: 300ms linear;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+
+  img {
+    margin-right: 11px;
+  }
+
+  &::before {
+    display: none;
+  }
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &.primary {
+    color: white;
+    background: var(--color-primary);
+    border: 1px solid var(--color-primay);
+  }
+}
+
+section#body {
+  width: 100vw;
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 80px calc(var(--padding) / 2);
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.flex-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-flow: row wrap;
+}
+
+.feature {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 50px;
+
+  padding: 20px;
+  background: #f7f8fb;
+  border-radius: 10px;
+
+  img {
+    margin: 0;
+    margin-bottom: -8px;
+  }
+
+  h2 {
+    font-size: 20px;
+    letter-spacing: -1px;
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 8px 0;
+    font-size: 16px;
+    line-height: 32px;
+  }
+
+  a {
+    color: var(--color-gray);
+    text-decoration: none;
+
+    img {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@keyframes hover {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(20px);
+  }
+}
+
+@media screen and (min-width: 800px) {
+  :root {
+    --padding: calc(100vw / 5);
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  nav {
+    display: unset;
+  }
+
+  .feature {
+    max-width: 20vw;
+    display: block;
+  }
+
+  .hero-content {
+    width: 50%;
+  }
+
+  #img_top {
+    display: block;
+    max-width: 50%;
+    opacity: 1;
+
+    img {
+      max-width: 100%;
+      animation: hover 2s ease-in-out alternate infinite;
+      z-index: -1;
+    }
+  }
+}

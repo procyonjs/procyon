@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procyon Web Framework</title>
+  <link rel="stylesheet" href="/assets/style/index.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap">
+</head>
+<body>
+  <div id="container">
+    <header>
+      <img src="/assets/logo.svg" alt="" />
+      <nav>
+        <a href="/docs">
+          <img height="20px" src="/assets/icons/basic/bulb.svg" alt="">
+          Docs
+        </a>
+        <a href="https://github.com/codemaster138/procyon">
+          <img height="20px" src="/assets/icons/brand/github.svg" alt="">
+          GitHub
+        </a>
+      </nav>
+    </header>
+    <section id="hero">
+      <div class="hero-content">
+        <h1>Build fullstack apps faster with Procyon</h1>
+        <p>Procyon is a simple, opinionated web development framework to streamline the process of building your backend.</p>
+        <div class="buttons">
+          <a href="/docs/intro" class="button primary">
+            Get Started
+          </a>
+          <a href="https://github.com/codemaster138/procyon" class="button">
+            <img height="21px" src="/assets/icons/brand/github.svg" alt="">
+            View on GitHub
+          </a>
+        </div>
+      </div>
+      <div id="img_top">
+        <img src="/assets/isometric_browser.svg" alt="">
+      </div>
+    </section>
+    <section id="body">
+      <div class="flex-row" id="features">
+        <div class="feature">
+          <img height="40px" src="/assets/icons/basic/slider_02.svg" alt="">
+          <h2>Highly Configurable</h2>
+          <p>Customize Procyon to speed up your development workflow.</p>
+          <a href="/docs"><img src="/assets/icons/basic/external_link.svg" alt="">Read the Docs</a>
+        </div>
+        <div class="feature">
+          <img height="40px" src="/assets/icons/basic/happy.svg" alt="">
+          <h2>Easy to use</h2>
+          <p>Procyon's developer experience is simply amazing!</p>
+          <a href="/docs"><img src="/assets/icons/basic/external_link.svg" alt="">Try it out</a>
+        </div>
+        <div class="feature">
+          <img height="40px" src="/assets/icons/basic/layers_alt.svg" alt="">
+          <h2>Integrates with your stack</h2>
+          <p>Procyon integrates seamlessly with React.JS &amp; Apollo Client!</p>
+          <a href="/docs"><img src="/assets/icons/basic/external_link.svg" alt="">Take a look</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="/assets/vanilla-tilt.min.js"></script>
+  <script>
+    VanillaTilt.init(document.querySelectorAll('.feature'), {
+      reverse: true,
+      glare: true,
+      'max-glare': 0.45
+    });
+  </script>
+</body>
+</html>
