@@ -25,7 +25,7 @@ const color =
     )
     : 'red';
 
-const badge = axios.get(`https://img.shields.io/static/v1?label=coverage&message=${percent}%25&color=${color}&style=flat-square`);
+const badge = axios.get(`https://img.shields.io/static/v1?label=coverage&message=${percent}%25&color=${color}&style=for-the-badge`);
 
 badge.then((res) => {
   fs.writeFileSync('./coverage.svg', res.data);
