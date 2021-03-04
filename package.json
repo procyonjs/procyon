@@ -1,0 +1,9 @@
+{
+  "name": "procyon",
+  "version": "0.0.0-alpha.0",
+  "description": "Procyon is a modern, opinionated web development framework",
+  "main": "build/index.js",
+  "repository": "https://github.com/procyonjs/procyon.git",
+  "author": "Jake Sarjeant <pygamer138@gmail.com>",
+  "license": "MIT"
+}
