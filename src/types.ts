@@ -10,7 +10,7 @@ import { trycatch } from './utils';
 /**
  * Represent a nullable string literal
  */
-export const STRING = (t: any) => !t || typeof t === 'string';
+export const STRING = (t: any, precast?: boolean) => t === null || typeof t === 'string';
 STRING.gql = 'String';
 
 /**
@@ -21,7 +21,7 @@ export const RSTRING = R(STRING);
 /**
  * Represent a nullable numeric literal
  */
-export const NUMBER = (t: any) => !t || typeof t === 'number';
+export const NUMBER = (t: any, precast?: boolean) => t === null || typeof t === 'number';
 NUMBER.gql = 'Float';
 // When receiving a REST request, all paramters are in string format.
 // In that case, this function is called, and then its output is
@@ -37,7 +37,7 @@ export const RNUMBER = R(NUMBER);
 /**
  * Represent a nullable boolean literal
  */
-export const BOOLEAN = (t: any) => !t || typeof t === 'boolean';
+export const BOOLEAN = (t: any, precast?: boolean) => t === null || typeof t === 'boolean';
 BOOLEAN.gql = 'Boolean';
 // See comments on NUMBER.rest_precast
 BOOLEAN.rest_precast = (t: any) => t === 'true' ? true : (t === 'false' ? false : (() => { throw new ProcyonPrecastError('Invalid boolean') })());
@@ -62,7 +62,7 @@ export const RID = RSTRING;
  * @param t Type of a valid array element
  */
 export const ARRAY = (t: Function) => {
-  const TYPE = (s: any) => !s || (Array.isArray(s) && s.every(v => t(t.rest_precast ? t.rest_precast(v) : v)));
+  const TYPE = (s: any, precast?: boolean) => s === null || (Array.isArray(s) && s.every(v => t(precast ? (t.rest_precast ? t.rest_precast(v) : v) : v)));
   TYPE.gql = `[${(t as any).gql}]`;
   TYPE.rest_precast = (t: any) => trycatch(() => JSON.parse(t), () => { throw new ProcyonPrecastError('Invalid JSON') });
   return TYPE;
@@ -80,7 +80,7 @@ export const RARRAY = (t: Function) => R(ARRAY(t));
  * @param map A mapping of key names and procyon types
  */
 export const INTERFACE = (_name: string, map: { [key: string]: Function }) => {
-  const TYPE = (t: any) => !t || Object.keys(t).every((key: string) => map[key] && map[key](map[key].rest_precast ? map[key].rest_precast(t[key] || null) : (t[key] || null)));
+  const TYPE = (t: any, precast?: boolean) => t === null || Object.keys(t).every((key: string) => map[key] && map[key]((precast ? (map[key].rest_precast ? map[key].rest_precast(t[key] || null) : (t[key] || null)) : (t[key] || null)));
   TYPE.gql = _name;
   TYPE.schema = `type ${_name} {\n${Object.keys(map).map(e => `${e}: ${(map[e] as any).gql}`).join(',\n')}\n}`;
   TYPE.rest_precast = (t: any) => trycatch(() => JSON.parse(t), () => { throw new ProcyonPrecastError('Invalid JSON') });
@@ -100,7 +100,7 @@ export const RINTERFACE = (_name: string, map: { [key: string]: Function }) => R
  * @param types The different types allowed in the union
  */
 export const UNION = (_name: string, ...types: Function) => {
-  const TYPE = (t: any) => !t || types.map(tp => tp(tp.rest_precast ? tp.rest_precast(t) : t)).some(v => v);
+  const TYPE = (t: any, precast?: boolean) => !t || types.map(tp => tp(precast ? (tp.rest_precast ? tp.rest_precast(t) : t) : t)).some(v => v);
   TYPE.gql = _name;
   TYPE.schema = `union ${_name} = ${types.map(tp => (tp as any).gql).join(' | ')}`;
   return TYPE;
@@ -118,7 +118,7 @@ export const RUNION = (_name: string, ...types: Function) => R(UNION(_name, ...t
  * @param _type A nullable type
  */
 export const R = (_type: Function) => {
-  const TYPE = (t: any) => t !=== null && _type(t);
+  const TYPE = (t: any, precast?: boolean) => t !== null && _type(t, precast);
   TYPE.gql = (_type as any).gql + '!';
   TYPE.schema = (_type as any).schema;
   TYPE.rest_precast = (_type as any).rest_precast;
