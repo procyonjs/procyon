@@ -1,9 +1,9 @@
-import test from "ava";
+import test from 'ava';
 
 test('foo', t => {
   t.pass();
 });
 
 test('bar', t => {
-  t.is('hello', 'h' + 'e' + 'l' + 'l' + 'o');
+  t.is('hello', 'hello');
 });

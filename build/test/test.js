@@ -8,5 +8,5 @@ ava_1.default('foo', function (t) {
     t.pass();
 });
 ava_1.default('bar', function (t) {
-    t.is('hello', 'h' + 'e' + 'l' + 'l' + 'o');
+    t.is('hello', 'hello');
 });
