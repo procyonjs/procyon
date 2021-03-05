@@ -52,6 +52,30 @@ test('RNUMBER type rejects null', t => {
   t.is(types.RNUMBER(null), false);
 });
 
+test('NUMBER and RNUMBER precast success', t => {
+  try {
+    types.NUMBER.rest_precast('56');
+    types.RNUMBER.rest_precast('257.321');
+    t.pass();
+  } catch (error: Error) {
+    t.fail();
+  }
+});
+
+test('NUMBER and RNUMBER precast failure', t => {
+  try {
+    types.NUMBER.rest_precast('hello');
+    t.fail();
+  } catch (error: Error) {
+    try {
+      types.RNUMBER.rest_precast('null');
+      t.fail();
+    } catch (error: Error) {
+      t.pass();
+    }
+  }
+});
+
 // BOOLEAN and RBOOLEAN
 test('BOOLEAN type accepts booleans', t => {
   t.is(types.BOOLEAN(true), true);
@@ -68,6 +92,30 @@ test('BOOLEAN type rejects non-bools', t => {
 
 test('RBOOLEAN type rejects null', t => {
   t.is(types.RBOOLEAN(null), false);
+});
+
+test('BOOLEAN and RBOOLEAN precast accepts \'true\' and \'false\'', t => {
+  try {
+    types.BOOLEAN.rest_precast('true');
+    types.RBOOLEAN.rest_precast('false');
+    t.pass();
+  } catch (error: Error) {
+    t.fail()
+  }
+});
+
+test('BOOLEAN and RBOOLEAN precast rejects \'hello\'', t => {
+  try {
+    types.BOOLEAN.rest_precast('hello');
+    t.fail();
+  } catch (error: Error) {
+    try {
+      types.RBOOLEAN.rest_precast('hello');
+      t.fail();
+    } catch (error: Error) {
+      t.pass();
+    }
+  }
 });
 
 // ID and RID
@@ -94,6 +142,22 @@ test('ARRAY type 2', t => {
   t.is(myArrayType(['hello', 5, 'world']), false);
 });
 
+test('ARRAY precast', t => {
+  const myArray = types.ARRAY(types.Number);
+  try {
+    myArray(myArray.rest_precast('[5, 6, 7]'));
+    
+    try {
+      myArray.rest_precast('alphabet');
+      t.fail();
+    } catch (error: Error) {
+      t.pass();
+    }
+  } catch (error: Error) {
+    t.fail();
+  }
+});
+
 test('RARRAY', t => {
   const myRArrayType = types.RARRAY(types.STRING);
   t.is(myRArrayType(null), false);
@@ -106,6 +170,22 @@ test('INTERFACE', t => {
   t.is(myInterface({foo: 'Hi', bar: false}), true);
   t.is(myInterface({buzz: 'bizz'}), false);
   t.is(myInterface(null), true);
+});
+
+test('INTERFACE precast', t => {
+  const myInterface = types.INTERFACE('test', {foo: types.STRING, bar: types.BOOLEAN});
+  try {
+    myInterface.rest_precast('{"foo": "hello", "bar": true}');
+    
+    try {
+      myInterface.rest_precast('{hello: world}');
+      t.fail()
+    } catch (error: Error) {
+      t.pass();
+    }
+  } catch (error: Error) {
+    t.fail();
+  }
 });
 
 test('RINTERFACE', t => {
