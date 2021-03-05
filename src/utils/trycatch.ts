@@ -6,7 +6,7 @@
 export default function trycatch(a: () => any, b: (error: Error) => any) {
   try {
     return a();
-  } catch (error: Error) {
+  } catch (error: any) {
     return b(error);
   }
 }

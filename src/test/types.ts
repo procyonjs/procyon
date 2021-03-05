@@ -33,7 +33,7 @@ test('NUMBER type accepts floating-points', t => {
 });
 
 test('NUMBER type accepts null', t => {
-  t.is(typed.NUMBER(null), true);
+  t.is(types.NUMBER(null), true);
 });
 
 test('NUMBER type rejects non-numbers', t => {
@@ -55,7 +55,7 @@ test('RNUMBER type rejects null', t => {
 test('NUMBER and RNUMBER precast success', t => {
   try {
     types.NUMBER.rest_precast('56');
-    types.RNUMBER.rest_precast('257.321');
+    types.RNUMBER.rest_precast?.('257.321');
     t.pass();
   } catch {
     t.fail();
@@ -68,7 +68,7 @@ test('NUMBER and RNUMBER precast failure', t => {
     t.fail();
   } catch {
     try {
-      types.RNUMBER.rest_precast('null');
+      types.RNUMBER.rest_precast?.('null');
       t.fail();
     } catch {
       t.pass();
@@ -97,7 +97,7 @@ test('RBOOLEAN type rejects null', t => {
 test('BOOLEAN and RBOOLEAN precast accepts \'true\' and \'false\'', t => {
   try {
     types.BOOLEAN.rest_precast('true');
-    types.RBOOLEAN.rest_precast('false');
+    types.RBOOLEAN.rest_precast?.('false');
     t.pass();
   } catch {
     t.fail();
@@ -110,7 +110,7 @@ test('BOOLEAN and RBOOLEAN precast rejects \'hello\'', t => {
     t.fail();
   } catch {
     try {
-      types.RBOOLEAN.rest_precast('hello');
+      types.RBOOLEAN.rest_precast?.('hello');
       t.fail();
     } catch {
       t.pass();
@@ -145,10 +145,10 @@ test('ARRAY type 2', t => {
 test('ARRAY precast', t => {
   const myArray = types.ARRAY(types.NUMBER);
   try {
-    myArray(myArray.rest_precast('[5, 6, 7]'));
+    myArray(myArray.rest_precast?.('[5, 6, 7]'));
 
     try {
-      myArray.rest_precast('alphabet');
+      myArray.rest_precast?.('alphabet');
       t.fail();
     } catch {
       t.pass();
@@ -195,14 +195,14 @@ test('RINTERFACE', t => {
 
 // UNION and RUNION
 test('UNION accepts types in the union and null', t => {
-  const myUnion = types.UNION(types.STRING, types.BOOLEAN);
+  const myUnion = types.UNION('test', types.STRING, types.BOOLEAN);
   t.is(myUnion('hello'), true);
   t.is(myUnion(false), true);
   t.is(myUnion(null), true);
 });
 
 test('RUNION rejects null', t => {
-  const myUnion = types.RUNION(types.STRING, types.BOOLEAN);
+  const myUnion = types.RUNION('test', types.STRING, types.BOOLEAN);
   t.is(myUnion(null), false);
 });
 // Since all the R-types are made using the R method, no tests of it are required

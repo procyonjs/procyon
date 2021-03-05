@@ -9,6 +9,18 @@ import {trycatch} from './utils';
 export type ProcyonType = ((t: any, precast?: boolean) => boolean) & {gql: string; schema?: string; rest_precast?: ((t: any) => any)};
 
 /**
+ * Returns the non-nullable version of a nullable type. For example, `types.RSTRING` is the same as `types.R(types.STRING)`
+ * @param _type A nullable type
+ */
+export const R = (_type: ProcyonType) => {
+  const TYPE = (t: any, precast?: boolean) => t !== null && _type(t, precast);
+  TYPE.gql = _type.gql + '!';
+  TYPE.schema = _type.schema;
+  TYPE.rest_precast = _type.rest_precast;
+  return TYPE;
+};
+
+/**
  * Represent a nullable string literal
  */
 export const STRING = (t: any, precast?: boolean) => t === null || typeof t === 'string';
@@ -81,13 +93,15 @@ export const ARRAY = (t: ProcyonType) => {
  */
 export const RARRAY = (t: ProcyonType) => R(ARRAY(t));
 
+const ifUndefined = (v: any, fallback: any) => v === undefined ? fallback : v;
+
 /**
  * Represent a nullable interface type
  * @param _name The interface's name in the GraphQL schema
  * @param map A mapping of key names and procyon types
  */
 export const INTERFACE = (_name: string, map: {[key: string]: ProcyonType}) => {
-  const TYPE = (t: any, precast?: boolean) => t === null || Object.keys(t).every((key: string) => map[key]?.((precast ? (map[key].rest_precast ? map[key].rest_precast(t[key] || null) : (t[key] || null)) : (t[key] || null))));
+  const TYPE = (t: any, precast?: boolean) => t === null || Object.keys(t).every((key: string) => map[key]?.((precast ? (map[key].rest_precast ? map[key].rest_precast?.(ifUndefined(t[key], null)) : ifUndefined(t[key], null)) : ifUndefined(t[key], null))));
   TYPE.gql = _name;
   TYPE.schema = `type ${_name} {\n${Object.keys(map).map(key => `${key}: ${map[key].gql}`).join(',\n')}\n}`;
   TYPE.rest_precast = (t: any) => trycatch(() => JSON.parse(t), () => {
@@ -108,10 +122,10 @@ export const RINTERFACE = (_name: string, map: {[key: string]: ProcyonType}) => 
  * @param _name The union type's name in the GraphQL schema
  * @param types The different types allowed in the union
  */
-export const UNION = (_name: string, ...types: ProcyonType) => {
+export const UNION = (_name: string, ...types: ProcyonType[]) => {
   const TYPE = (t: any, precast?: boolean) => !t || types.map(tp => tp(precast ? (tp.rest_precast ? tp.rest_precast(t) : t) : t)).some(v => v);
   TYPE.gql = _name;
-  TYPE.schema = `union ${_name} = ${types.map(tp => tp.gql).join(' | ') as string}`;
+  TYPE.schema = `union ${_name} = ${types.map(tp => tp.gql).join(' | ')}`;
   return TYPE;
 };
 
@@ -120,16 +134,4 @@ export const UNION = (_name: string, ...types: ProcyonType) => {
  * @param _name The union type's name in the GraphQL schema
  * @param types The different types allowed in the union
  */
-export const RUNION = (_name: string, ...types: ProcyonType) => R(UNION(_name, ...types));
-
-/**
- * Returns the non-nullable version of a nullable type. For example, `types.RSTRING` is the same as `types.R(types.STRING)`
- * @param _type A nullable type
- */
-export const R = (_type: ProcyonType) => {
-  const TYPE = (t: any, precast?: boolean) => t !== null && _type(t, precast);
-  TYPE.gql = _type.gql + '!';
-  TYPE.schema = _type.schema;
-  TYPE.rest_precast = _type.rest_precast;
-  return TYPE;
-};
+export const RUNION = (_name: string, ...types: ProcyonType[]) => R(UNION(_name, ...types));

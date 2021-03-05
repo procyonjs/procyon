@@ -43,7 +43,7 @@ test('trycatch doesn\'t catch errors from b', t => {
         throw new Error('baz buzz');
       });
     t.fail();
-  } catch (error: Error) {
-    t.is(error.message, 'baz buzz');
+  } catch (error: any) {
+    t.is(error?.message, 'baz buzz');
   }
 });
