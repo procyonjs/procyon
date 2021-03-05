@@ -57,7 +57,7 @@ test('NUMBER and RNUMBER precast success', t => {
     types.NUMBER.rest_precast('56');
     types.RNUMBER.rest_precast('257.321');
     t.pass();
-  } catch (error: Error) {
+  } catch {
     t.fail();
   }
 });
@@ -66,11 +66,11 @@ test('NUMBER and RNUMBER precast failure', t => {
   try {
     types.NUMBER.rest_precast('hello');
     t.fail();
-  } catch (error: Error) {
+  } catch {
     try {
       types.RNUMBER.rest_precast('null');
       t.fail();
-    } catch (error: Error) {
+    } catch {
       t.pass();
     }
   }
@@ -99,7 +99,7 @@ test('BOOLEAN and RBOOLEAN precast accepts \'true\' and \'false\'', t => {
     types.BOOLEAN.rest_precast('true');
     types.RBOOLEAN.rest_precast('false');
     t.pass();
-  } catch (error: Error) {
+  } catch {
     t.fail()
   }
 });
@@ -108,11 +108,11 @@ test('BOOLEAN and RBOOLEAN precast rejects \'hello\'', t => {
   try {
     types.BOOLEAN.rest_precast('hello');
     t.fail();
-  } catch (error: Error) {
+  } catch {
     try {
       types.RBOOLEAN.rest_precast('hello');
       t.fail();
-    } catch (error: Error) {
+    } catch {
       t.pass();
     }
   }
@@ -150,10 +150,10 @@ test('ARRAY precast', t => {
     try {
       myArray.rest_precast('alphabet');
       t.fail();
-    } catch (error: Error) {
+    } catch {
       t.pass();
     }
-  } catch (error: Error) {
+  } catch {
     t.fail();
   }
 });
@@ -180,10 +180,10 @@ test('INTERFACE precast', t => {
     try {
       myInterface.rest_precast('{hello: world}');
       t.fail()
-    } catch (error: Error) {
+    } catch {
       t.pass();
     }
-  } catch (error: Error) {
+  } catch {
     t.fail();
   }
 });
