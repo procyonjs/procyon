@@ -1,1 +1,1 @@
-export { default as trycatch } from './trycatch';
+export {default as trycatch} from './trycatch';
