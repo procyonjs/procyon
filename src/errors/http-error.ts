@@ -66,7 +66,7 @@ export type HttpRedirectionStatusCode = 300 | 301 | 302 | 303 | 304 | 307 | 308;
  *  - 431 Request Header Fields Too Large
  *  - 432 Unavailable For Legal Reasons
  */
-export type HttpClientErrorStatusCode = 400 | 401 | 402 | 403 | 405 | 406 | 407 | 408 | 409| 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451;
+export type HttpClientErrorStatusCode = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409| 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451;
 
 /**
  * Valid server error status codes:
@@ -82,15 +82,15 @@ export type HttpClientErrorStatusCode = 400 | 401 | 402 | 403 | 405 | 406 | 407 
  *  - 510 Not Extended
  *  - 511 Network Authentication Required
  */
-export type HttpServerErrorStatusCode = 500 | 501 |  502 | 503 | 504 | 505 | 506 | 507 | 508 | 510 | 511;
+export type HttpServerErrorStatusCode = 500 | 501 | 502 | 503 | 504 | 505 | 506 | 507 | 508 | 510 | 511;
 
 export type HttpStatusCode = HttpInformationalStatusCode | HttpSuccessStatusCode | HttpRedirectionStatusCode | HttpClientErrorStatusCode | HttpServerErrorStatusCode;
 
 export default class HttpError extends Error {
+  status: HttpStatusCode = 200;
+
   constructor(status: HttpStatusCode, message?: string) {
     super(message);
     this.status = status;
   }
-
-  status: HttpStatusCode;
 }
