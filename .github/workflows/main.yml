@@ -1,0 +1,50 @@
+name: CI & Testing
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: v14.x.x
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Build
+        run: npm run tsc
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: v14.x.x
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Style Check
+        run: npm run stylecheck
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: v14.x.x
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Tests
+        run: npm test
+      - name: Upload coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-summary.json
+          path: coverage/coverage-summary.json
