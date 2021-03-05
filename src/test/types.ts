@@ -100,7 +100,7 @@ test('BOOLEAN and RBOOLEAN precast accepts \'true\' and \'false\'', t => {
     types.RBOOLEAN.rest_precast('false');
     t.pass();
   } catch {
-    t.fail()
+    t.fail();
   }
 });
 
@@ -143,10 +143,10 @@ test('ARRAY type 2', t => {
 });
 
 test('ARRAY precast', t => {
-  const myArray = types.ARRAY(types.Number);
+  const myArray = types.ARRAY(types.NUMBER);
   try {
     myArray(myArray.rest_precast('[5, 6, 7]'));
-    
+
     try {
       myArray.rest_precast('alphabet');
       t.fail();
@@ -176,10 +176,10 @@ test('INTERFACE precast', t => {
   const myInterface = types.INTERFACE('test', {foo: types.STRING, bar: types.BOOLEAN});
   try {
     myInterface.rest_precast('{"foo": "hello", "bar": true}');
-    
+
     try {
       myInterface.rest_precast('{hello: world}');
-      t.fail()
+      t.fail();
     } catch {
       t.pass();
     }
